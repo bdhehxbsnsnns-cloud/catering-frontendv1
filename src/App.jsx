@@ -255,7 +255,7 @@ const MENU_ITEMS = [
 
 // ВНИМАНИЕ! После того как задеплоите бэкенд (server.js), вставьте сюда ссылку:
 // Например: const BACKEND_URL = 'https://my-backend-server.onrender.com';
-const BACKEND_URL = 'catering-backendv14-production.up.railway.app'; // Пока оставил локалхост для разработки
+const BACKEND_URL = 'https://catering-backendv14-production.up.railway.app'; // Пока оставил локалхост для разработки
 
 export default function App() {
   const [cart, setCart] = useState({});
