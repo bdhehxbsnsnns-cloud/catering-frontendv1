@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingCart, Plus, Minus, ArrowLeft, CheckCircle, Calendar, Users, Phone, User as UserIcon, ChefHat, Info } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, ArrowLeft, CheckCircle, Calendar, Users, Phone, User as UserIcon, ChefHat, Lock, Edit2, Trash2, Image as ImageIcon, Save, X } from 'lucide-react';
 
 const MENU_CATEGORIES = [
   { id: 'all', name: 'Все товары' },
@@ -7,280 +7,57 @@ const MENU_CATEGORIES = [
   { id: 'menu', name: 'Меню' }
 ];
 
-const MENU_ITEMS = [
-  // --- ГРИЛЬ ЗОНА ---
-  { 
-    id: 1, 
-    category: 'grill', 
-    name: 'Сет шашлыка XXL', 
-    price: 6000, 
-    desc: 'Большой мясной микс от Catering-Кудряшова — для тех, кто любит сытно, вкусно и по-мужски.\n\nСостав:\n• Люля-кебаб (говядина + баранина)\n• Шашлык из говядины\n• Шашлык из ягнёнка\n• Шашлык из курицы\n• Картофель фри\n• Лук, зелень\n• Фирменный соус (7 шт.) + Лепешки\n\n⚖️ Вес сета: 2200–2600 г', 
-    image: '/set-xxl.jpg' 
-  },
-  { 
-    id: 2, 
-    category: 'grill', 
-    name: 'Сет шашлыка XL', 
-    price: 4000, 
-    desc: 'Большой мясной микс. В одном блюде собраны топовые позиции.\n\nСостав:\n• Люля-кебаб\n• Шашлык из говядины\n• Шашлык из ягнёнка\n• Шашлык из курицы\n• Картофель фри\n• Лук, зелень\n• Фирменный соус (5 шт.)\n\n⚖️ Вес сета: 1200-1500 г', 
-    image: '/set-xl.jpg' 
-  },
-  {
-    id: 6,
-    category: 'grill',
-    name: 'Шашлык учпанжа',
-    price: 1130,
-    desc: 'Сочное мраморное мясо, маринованное в специях и обжаренное на мангале до идеальной корочки.\n\n🍽 Подача: лук + фирменный соус.\n\n⚖️ Вес: ≈ 400г',
-    image: '/Shashlyk-uchpanzha.jpg'
-  },
-  {
-    id: 7,
-    category: 'grill',
-    name: 'Шашлык из бараньей корейки',
-    price: 920,
-    desc: 'Премиальный шашлык из корейки молодого ягнёнка — мясо на косточке, обжаренное на живом огне.\n\n🍽 В подачу входит:\n• лук с зеленью\n• фирменный соус\n\n⚖️ Вес порции: ≈ 260-300 г',
-    image: '/Shashlyk-iz-baranyey-koreyki.jpg'
-  },
-  {
-    id: 8,
-    category: 'grill',
-    name: 'Шашлык рулет с фаршем',
-    price: 520,
-    desc: 'Оригинальный шашлык в виде мясных рулетиков — снаружи нежнейшее мясо, внутри сочный фарш.\n\n⚖️ Вес порции: ≈ 200 г',
-    image: '/Shashlyk-rulet-s-farshem.jpg'
-  },
-  {
-    id: 9,
-    category: 'grill',
-    name: 'Шашлык рулет из говядины',
-    price: 520,
-    desc: 'Нежное филе говядины с прослойкой курдючного сала сворачивается в спираль и обжаривается до хруста.\n\n⚖️ Вес порции: ≈ 200 г',
-    image: '/Shashlyk-rulet-iz-govyadiny.jpg'
-  },
-  {
-    id: 10,
-    category: 'grill',
-    name: 'Шашлык из телячьей мякоти',
-    price: 420,
-    desc: 'Отборная говядина, маринованная по авторскому рецепту с добавлением кусочков сала для сочности.\n\n⚖️ Вес порции: ≈ 200-220 г',
-    image: '/Shashlyk-iz-telyachyey-myakoti.jpg'
-  },
-  {
-    id: 11,
-    category: 'grill',
-    name: 'Шашлык наполеон нежный',
-    price: 510,
-    desc: 'Фирменный узбекский шашлык — мясо нарезано слоями (баранина, говядина и курдюк).\n\n⚖️ Вес порции: ≈ 190-200г',
-    image: '/Shashlyk-napoleon-nezhnyy.jpg'
-  },
-  {
-    id: 12,
-    category: 'grill',
-    name: 'Люля-кебаб из телятины',
-    price: 420,
-    desc: 'Мелкий рубленый фарш (говядина + баранина), специи и лук. Готовим на мангале.\n\n⚖️ Вес порции: ≈ 180-200 г',
-    image: '/Lyulya-kebab-iz-telyatiny.jpg'
-  },
-  {
-    id: 13,
-    category: 'grill',
-    name: 'Шашлык из куриных крылышек',
-    price: 410,
-    desc: 'Сочные крылышки в ароматном маринаде, жарим на мангале.\n\n⚖️ Вес: 230 г',
-    image: '/Shashlyk-iz-kurinykh-krylyshek.jpg'
-  },
-  {
-    id: 14,
-    category: 'grill',
-    name: 'Шашлык куриный',
-    price: 410,
-    desc: 'Классика в авторском маринаде. Курица остается сочной внутри и подрумяненной снаружи.\n\n⚖️ Вес порции: ≈ 200–220 г',
-    image: '/Shashlyk-kurinyy.jpg'
-  },
-  {
-    id: 15,
-    category: 'grill',
-    name: 'Грибочки на углях',
-    price: 330,
-    desc: 'Ароматные шампиньоны с румяной корочкой. Идеальный гарнир.\n\n⚖️ Вес порции: ≈ 190-220г',
-    image: '/Gribochki-a-uglyakh.jpg'
-  },
-  {
-    id: 16,
-    category: 'grill',
-    name: 'Шашлык из овощей гриль',
-    price: 480,
-    desc: 'Баклажан, кабачок, перец и шампиньон, обжаренные до мягкости.\n\n⚖️ Вес порции: ≈ 250г',
-    image: '/Shashlyk-iz-ovoshchey-gril.jpg'
-  },
-  {
-    id: 17,
-    category: 'grill',
-    name: 'Картошечка фри',
-    price: 180,
-    desc: 'Золотистая и хрустящая — идеальный гарнир.\n\n⚖️ Порция: 150 г',
-    image: '/Kartoshechka-fri.jpg'
-  },
-  {
-    id: 18,
-    category: 'grill',
-    name: 'Лепешка тандыр',
-    price: 130,
-    desc: 'Свежая, румяная лепешка из тандыра.\n\n⚖️ Порция: 1 шт',
-    image: '/Lepeshka-tandyr.jpg'
-  },
-
-  // --- МЕНЮ ---
-  { 
-    id: 3, 
-    category: 'menu', 
-    name: 'Плов', 
-    price: 550, 
-    desc: 'Настоящий узбекский плов с мясом, нутом и изюмом. Подается с салатом и лепешкой.\n\n⚖️ Вес: ≈ 370г', 
-    image: '/plov.jpg' 
-  },
-  { 
-    id: 4, 
-    category: 'menu', 
-    name: 'Казан кебаб', 
-    price: 600, 
-    desc: 'Томлёная говядина с картофелем и специями. Подано с овощами и соусом.\n\n⚖️ Вес: ≈ 400г', 
-    image: '/kazan-kebab.jpg' 
-  },
-  {
-    id: 19,
-    category: 'menu',
-    name: 'Долма',
-    price: 580,
-    desc: 'Виноградные листья с мясом и рисом. Подаётся со сметаной.\n\n⚖️ Порция: 7 штук',
-    image: '/Dolma.jpg'
-  },
-  {
-    id: 20,
-    category: 'menu',
-    name: 'Жиз',
-    price: 620,
-    desc: 'Нежное отварное мясо с картофелем и луком. Традиционный вкус.\n\n⚖️ Вес: 350 г',
-    image: '/Zhiz.jpg'
-  },
-  {
-    id: 21,
-    category: 'menu',
-    name: 'Лагман жаренный',
-    price: 500,
-    desc: 'Обжаренная лапша с мясом и овощами. Очень сытно.',
-    image: '/Lagman-zharennyy.jpg'
-  },
-  {
-    id: 22,
-    category: 'menu',
-    name: 'Манты',
-    price: 510,
-    desc: 'Сочная говядина и лук в тонком тесте. На пару.\n\n⚖️ Порция: 5 штук',
-    image: '/Manty.jpg'
-  },
-  { 
-    id: 23, 
-    category: 'menu', 
-    name: 'Манты жареные', 
-    price: 540, 
-    desc: 'Хрустящая корочка и сочная начинка. Подаются со сметаной.\n\n⚖️ Порция: 5 штук', 
-    image: '/Manty-zharenye.jpg' 
-  },
-  {
-    id: 24,
-    category: 'menu',
-    name: 'Борщ',
-    price: 460,
-    desc: 'Домашний борщ на мясном бульоне со сметаной.\n\n⚖️ Вес: 500 г',
-    image: '/Borshch.jpg'
-  },
-  {
-    id: 25,
-    category: 'menu',
-    name: 'Мастава',
-    price: 480,
-    desc: 'Густой узбекский рисовый суп с говядиной.',
-    image: '/Mastava.jpg'
-  },
-  {
-    id: 26,
-    category: 'menu',
-    name: 'Лагман',
-    price: 480,
-    desc: 'Домашняя лапша с тушёным мясом и овощами.',
-    image: '/Lagman.jpg'
-  },
-  {
-    id: 27,
-    category: 'menu',
-    name: 'Салат цезарь',
-    price: 330,
-    desc: 'Куриное филе, сухарики, черри и пармезан.\n\n⚖️ Порция: 200 г',
-    image: '/Salat-tsezar.jpg'
-  },
-  {
-    id: 28,
-    category: 'menu',
-    name: 'Картошечка фри',
-    price: 180,
-    desc: 'Золотистая и хрустящая картошечка фри.\n\n⚖️ Порция: 150 г',
-    image: '/Kartoshechka-fri.jpg'
-  },
-  {
-    id: 29,
-    category: 'menu',
-    name: 'Лепешка тандыр',
-    price: 130,
-    desc: 'Свежая, румяная лепешка из тандыра.\n\n⚖️ Порция: 1 шт',
-    image: '/Lepeshka-tandyr.jpg'
-  },
-  {
-    id: 30,
-    category: 'menu',
-    name: 'Наггетсы',
-    price: 310,
-    desc: '🔥 Обжарка до румяной корочки\n🥩 Мясо куриное, натуральное\n🍗 Количество: 6 штук',
-    image: '/Naggetsy.jpg'
-  },
-  {
-    id: 31,
-    category: 'menu',
-    name: 'Бургер сочная котлета',
-    price: 430,
-    desc: '🔥 Приготовление на мангале или гриле\n🥩 Только свежие продукты\n🍔 Вес бургера: ≈ 350 г',
-    image: '/Burger-sochnaya-kotleta.jpg'
-  }
-];
-
-// ВНИМАНИЕ! После того как задеплоите бэкенд (server.js), вставьте сюда ссылку:
-// Например: const BACKEND_URL = 'https://my-backend-server.onrender.com';
-const BACKEND_URL = 'https://catering-backendv14-production.up.railway.app'; // Пока оставил локалхост для разработки
+// Ссылка на ваш рабочий сервер Railway
+const BACKEND_URL = 'https://catering-backendv14-production.up.railway.app';
+const ADMIN_PASSWORD = '7777'; // Пароль для входа в админку
 
 export default function App() {
+  const [menuItems, setMenuItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
   const [cart, setCart] = useState({});
   const [activeCategory, setActiveCategory] = useState('all');
-  const [view, setView] = useState('menu'); 
+  const [view, setView] = useState('menu'); // menu, checkout, success, admin_login, admin_dashboard
   const [expandedItems, setExpandedItems] = useState({});
   const [toastMessage, setToastMessage] = useState('');
   const toastTimeout = useRef(null);
   
-  const [formData, setFormData] = useState({
-    guests: '',
-    date: '',
-    name: '',
-    phone: ''
-  });
-  
+  const [formData, setFormData] = useState({ guests: '', date: '', name: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // --- СОСТОЯНИЯ АДМИНКИ ---
+  const [adminPassInput, setAdminPassInput] = useState('');
+  const [adminForm, setAdminForm] = useState({ name: '', category: 'grill', price: '', desc: '', image: '' });
+  const [editingId, setEditingId] = useState(null);
+
+  // Загружаем товары из базы данных при старте
   useEffect(() => {
+    fetchMenu();
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.ready();
       tg.expand();
     }
   }, []);
+
+  const fetchMenu = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/menu`);
+      const data = await response.json();
+      setMenuItems(data);
+    } catch (error) {
+      console.error('Ошибка загрузки меню:', error);
+      showToast('Ошибка загрузки меню ❌');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    if (toastTimeout.current) clearTimeout(toastTimeout.current);
+    toastTimeout.current = setTimeout(() => setToastMessage(''), 3000);
+  };
 
   const updateCart = (itemId, delta) => {
     setCart(prev => {
@@ -299,7 +76,7 @@ export default function App() {
     let total = 0;
     let count = 0;
     Object.entries(cart).forEach(([id, qty]) => {
-      const item = MENU_ITEMS.find(item => item.id === parseInt(id));
+      const item = menuItems.find(item => item._id === id);
       if (item) {
         total += item.price * qty;
         count += qty;
@@ -312,9 +89,7 @@ export default function App() {
 
   const handleAddToCart = (itemId) => {
     updateCart(itemId, 1);
-    setToastMessage('Правильный выбор! ✨');
-    if (toastTimeout.current) clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setToastMessage(''), 2000);
+    showToast('Добавлено в заказ! ✨');
   };
 
   const toggleExpand = (itemId) => {
@@ -326,20 +101,18 @@ export default function App() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmitOrder = async (e) => {
     if (e) e.preventDefault();
     
     if (!formData.guests || !formData.date || !formData.name || !formData.phone) {
-      setToastMessage('Заполните все поля ❗️');
-      if (toastTimeout.current) clearTimeout(toastTimeout.current);
-      toastTimeout.current = setTimeout(() => setToastMessage(''), 3000);
+      showToast('Заполните все поля ❗️');
       return;
     }
 
     setIsSubmitting(true);
 
     const orderItems = Object.entries(cart).map(([id, qty]) => {
-      const item = MENU_ITEMS.find(i => i.id === parseInt(id));
+      const item = menuItems.find(i => i._id === id);
       return { name: item.name, price: item.price, quantity: qty };
     });
 
@@ -350,7 +123,6 @@ export default function App() {
     };
 
     try {
-      // ИСПОЛЬЗУЕМ ПЕРЕМЕННУЮ BACKEND_URL ЗДЕСЬ
       const response = await fetch(`${BACKEND_URL}/api/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -365,23 +137,102 @@ export default function App() {
         throw new Error('Ошибка сервера');
       }
     } catch (error) {
-      console.error('Ошибка:', error);
-      setToastMessage('Сервер недоступен ❌');
-      if (toastTimeout.current) clearTimeout(toastTimeout.current);
-      toastTimeout.current = setTimeout(() => setToastMessage(''), 3000);
+      showToast('Сервер недоступен ❌');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // --- ФУНКЦИИ АДМИНКИ ---
+  const handleAdminLogin = () => {
+    if (adminPassInput === ADMIN_PASSWORD) {
+      setView('admin_dashboard');
+      setAdminPassInput('');
+    } else {
+      showToast('Неверный пароль ❌');
+    }
+  };
+
+  const saveMenuItem = async () => {
+    if (!adminForm.name || !adminForm.price || !adminForm.image) {
+      showToast('Заполните название, цену и фото ❗️');
+      return;
+    }
+
+    const isEditing = editingId !== null;
+    const url = isEditing ? `${BACKEND_URL}/api/menu/${editingId}` : `${BACKEND_URL}/api/menu`;
+    const method = isEditing ? 'PUT' : 'POST';
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...adminForm, price: Number(adminForm.price) })
+      });
+
+      if (response.ok) {
+        showToast(isEditing ? 'Изменено! ✅' : 'Добавлено! ✅');
+        setAdminForm({ name: '', category: 'grill', price: '', desc: '', image: '' });
+        setEditingId(null);
+        fetchMenu(); // Обновляем список
+      }
+    } catch (error) {
+      showToast('Ошибка сохранения ❌');
+    }
+  };
+
+  const deleteMenuItem = async (id) => {
+    if (!window.confirm('Точно удалить этот товар?')) return;
+    try {
+      await fetch(`${BACKEND_URL}/api/menu/${id}`, { method: 'DELETE' });
+      showToast('Удалено! 🗑');
+      fetchMenu();
+    } catch (error) {
+      showToast('Ошибка удаления ❌');
+    }
+  };
+
+  const startEditing = (item) => {
+    setEditingId(item._id);
+    setAdminForm({
+      name: item.name,
+      category: item.category,
+      price: item.price,
+      desc: item.desc,
+      image: item.image
+    });
+    window.scrollTo(0, 0);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setAdminForm({ name: '', category: 'grill', price: '', desc: '', image: '' });
+  };
+
+  // --- ГЛОБАЛЬНЫЙ ТОСТЕР (Уведомления) ---
+  const ToastComponent = () => (
+    <div className={`fixed top-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${toastMessage ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'}`}>
+      <div className="bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl border border-white/10">
+        <span className="font-semibold text-sm uppercase">{toastMessage}</span>
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-orange-500">
+        <ChefHat size={48} className="animate-bounce" />
+      </div>
+    );
+  }
+
+  // ==========================================
+  // ВИД 1: ГЛАВНОЕ МЕНЮ
+  // ==========================================
   if (view === 'menu') {
     return (
       <div className="max-w-md mx-auto min-h-screen bg-gray-50 pb-28 font-sans text-gray-800 relative">
-        <div className={`fixed top-8 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 ${toastMessage ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'}`}>
-          <div className="bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl border border-white/10">
-            <span className="font-semibold text-sm uppercase">{toastMessage}</span>
-          </div>
-        </div>
+        <ToastComponent />
 
         <div className="relative h-48 bg-gray-900 flex items-center justify-center overflow-hidden">
           <img src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=600" alt="Catering" className="absolute inset-0 w-full h-full object-cover opacity-40" />
@@ -409,59 +260,63 @@ export default function App() {
         </div>
 
         <div className="p-4 space-y-5">
-          {MENU_ITEMS
-            .filter(item => {
-              if (activeCategory === 'all') {
-                if (item.category === 'menu' && (item.name === 'Картошечка фри' || item.name === 'Лепешка тандыр')) return false;
-                return true;
-              }
-              return item.category === activeCategory;
-            })
-            .map(item => {
-              const qty = cart[item.id] || 0;
-              const isExpanded = expandedItems[item.id];
-              const isLong = item.desc.length > 100;
-              const displayDesc = isExpanded || !isLong ? item.desc : item.desc.slice(0, 100).trim() + '...';
+          {menuItems.length === 0 ? (
+             <div className="text-center py-10 text-gray-400">
+               <p>Меню пока пусто.</p>
+               <p className="text-sm mt-2">Администратор скоро добавит вкусные блюда!</p>
+             </div>
+          ) : (
+            menuItems
+              .filter(item => activeCategory === 'all' || item.category === activeCategory)
+              .map(item => {
+                const qty = cart[item._id] || 0;
+                const isExpanded = expandedItems[item._id];
+                const isLong = item.desc && item.desc.length > 100;
+                const displayDesc = isExpanded || !isLong ? item.desc : item.desc.slice(0, 100).trim() + '...';
 
-              return (
-                <div key={item.id} className="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col transition-transform active:scale-[0.99]">
-                  <div className="h-52 relative">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                    <div className="absolute top-3 right-3 bg-white/90 px-3 py-1 rounded-full shadow-sm font-bold text-gray-900">
-                      {item.price} ₽
+                return (
+                  <div key={item._id} className="bg-white rounded-3xl shadow-sm overflow-hidden flex flex-col transition-transform active:scale-[0.99]">
+                    <div className="h-52 relative bg-gray-100">
+                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=Нет+Фото' }} />
+                      <div className="absolute top-3 right-3 bg-white/90 px-3 py-1 rounded-full shadow-sm font-bold text-gray-900">
+                        {item.price} ₽
+                      </div>
+                    </div>
+                    <div className="p-5 flex-1 flex flex-col">
+                      <h3 className="font-bold text-lg text-gray-900 mb-1.5">{item.name}</h3>
+                      <div className="mb-4 text-gray-500 text-sm leading-relaxed whitespace-pre-line">
+                        {displayDesc}
+                        {isLong && (
+                          <button onClick={() => toggleExpand(item._id)} className="text-orange-500 font-medium ml-1">
+                            {isExpanded ? 'Свернуть' : 'Читать далее'}
+                          </button>
+                        )}
+                      </div>
+                      <div className="mt-auto pt-2">
+                        {qty === 0 ? (
+                          <button onClick={() => handleAddToCart(item._id)} className="w-full bg-gray-900 text-white py-2.5 rounded-xl flex justify-center items-center shadow-md active:scale-95 transition-all">
+                            <Plus size={24} />
+                          </button>
+                        ) : (
+                          <div className="flex items-center justify-between bg-gray-900 rounded-xl p-1.5">
+                            <button onClick={() => updateCart(item._id, -1)} className="p-2 text-white/80 hover:bg-white/10 rounded-lg"><Minus size={20} /></button>
+                            <span className="font-bold text-white text-lg w-10 text-center">{qty}</span>
+                            <button onClick={() => updateCart(item._id, 1)} className="p-2 text-white hover:bg-white/10 rounded-lg"><Plus size={20} /></button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="font-bold text-lg text-gray-900 mb-1.5">{item.name}</h3>
-                    <div className="mb-4 text-gray-500 text-sm leading-relaxed whitespace-pre-line">
-                      {displayDesc}
-                      {isLong && (
-                        <button onClick={() => toggleExpand(item.id)} className="text-orange-500 font-medium ml-1">
-                          {isExpanded ? 'Свернуть' : 'Читать далее'}
-                        </button>
-                      )}
-                    </div>
-                    <div className="mt-auto pt-2">
-                      {qty === 0 ? (
-                        <button onClick={() => handleAddToCart(item.id)} className="w-full bg-gray-900 text-white py-2.5 rounded-xl flex justify-center items-center shadow-md active:scale-95 transition-all">
-                          <Plus size={24} />
-                        </button>
-                      ) : (
-                        <div className="flex items-center justify-between bg-gray-900 rounded-xl p-1.5">
-                          <button onClick={() => updateCart(item.id, -1)} className="p-2 text-white/80 hover:bg-white/10 rounded-lg">
-                            <Minus size={20} />
-                          </button>
-                          <span className="font-bold text-white text-lg w-10 text-center">{qty}</span>
-                          <button onClick={() => updateCart(item.id, 1)} className="p-2 text-white hover:bg-white/10 rounded-lg">
-                            <Plus size={20} />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-          })}
+                );
+            })
+          )}
+        </div>
+
+        {/* КНОПКА ВХОДА В АДМИНКУ */}
+        <div className="py-8 flex justify-center">
+          <button onClick={() => setView('admin_login')} className="p-3 text-gray-300 hover:text-gray-400 transition-colors">
+            <Lock size={16} />
+          </button>
         </div>
 
         {cartCount > 0 && (
@@ -482,9 +337,13 @@ export default function App() {
     );
   }
 
+  // ==========================================
+  // ВИД 2: ОФОРМЛЕНИЕ ЗАКАЗА
+  // ==========================================
   if (view === 'checkout') {
     return (
       <div className="max-w-md mx-auto min-h-screen bg-gray-50 flex flex-col font-sans">
+        <ToastComponent />
         <div className="bg-white shadow-sm p-4 flex items-center gap-3 sticky top-0 z-20">
           <button onClick={() => setView('menu')} className="p-2 -ml-2 text-gray-400"><ArrowLeft size={24} /></button>
           <h1 className="text-xl font-bold">Оформление</h1>
@@ -494,7 +353,8 @@ export default function App() {
             <h2 className="font-bold text-lg mb-4">Ваш заказ</h2>
             <div className="space-y-4">
               {Object.entries(cart).map(([id, qty]) => {
-                const item = MENU_ITEMS.find(i => i.id === parseInt(id));
+                const item = menuItems.find(i => i._id === id);
+                if (!item) return null;
                 return (
                   <div key={id} className="flex justify-between items-center text-sm">
                     <span className="text-gray-700">{qty} шт × {item.name}</span>
@@ -532,13 +392,7 @@ export default function App() {
           </div>
         </div>
         <div className="p-4 bg-white border-t sticky bottom-0">
-          <button 
-            onClick={handleSubmit} 
-            disabled={isSubmitting}
-            className={`w-full text-white rounded-2xl py-4 font-bold text-lg transition-all ${
-              isSubmitting ? 'bg-gray-400' : 'bg-gray-900 active:scale-95'
-            }`}
-          >
+          <button onClick={handleSubmitOrder} disabled={isSubmitting} className={`w-full text-white rounded-2xl py-4 font-bold text-lg transition-all ${isSubmitting ? 'bg-gray-400' : 'bg-gray-900 active:scale-95'}`}>
             {isSubmitting ? 'Отправляем...' : 'Оставить заявку'}
           </button>
         </div>
@@ -546,6 +400,9 @@ export default function App() {
     );
   }
 
+  // ==========================================
+  // ВИД 3: УСПЕШНЫЙ ЗАКАЗ
+  // ==========================================
   if (view === 'success') {
     return (
       <div className="max-w-md mx-auto min-h-screen bg-white flex flex-col items-center justify-center p-8 text-center font-sans">
@@ -553,6 +410,112 @@ export default function App() {
         <h1 className="text-3xl font-black mb-4">Принято!</h1>
         <p className="text-gray-500 mb-8">Менеджер свяжется с вами по номеру <b>{formData.phone}</b> в ближайшее время.</p>
         <button onClick={() => window.Telegram?.WebApp?.close()} className="w-full bg-gray-100 py-4 rounded-2xl font-bold">Закрыть</button>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // ВИД 4: АВТОРИЗАЦИЯ АДМИНА
+  // ==========================================
+  if (view === 'admin_login') {
+    return (
+      <div className="max-w-md mx-auto min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8 font-sans">
+        <ToastComponent />
+        <div className="w-full bg-white p-8 rounded-3xl shadow-2xl flex flex-col items-center">
+          <Lock size={48} className="text-gray-900 mb-4" />
+          <h1 className="text-2xl font-bold mb-6 text-gray-900">Админ-панель</h1>
+          <input 
+            type="password" 
+            placeholder="Введите пароль" 
+            className="w-full bg-gray-50 border-2 border-gray-100 rounded-xl px-4 py-3 text-center text-lg mb-4 outline-none focus:border-gray-900 transition-colors"
+            value={adminPassInput}
+            onChange={(e) => setAdminPassInput(e.target.value)}
+          />
+          <button onClick={handleAdminLogin} className="w-full bg-gray-900 text-white rounded-xl py-3 font-bold active:scale-95 transition-transform">
+            Войти
+          </button>
+          <button onClick={() => setView('menu')} className="mt-4 text-gray-400 text-sm font-medium">Вернуться в меню</button>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // ВИД 5: ПАНЕЛЬ УПРАВЛЕНИЯ (АДМИНКА)
+  // ==========================================
+  if (view === 'admin_dashboard') {
+    return (
+      <div className="max-w-md mx-auto min-h-screen bg-gray-50 flex flex-col font-sans">
+        <ToastComponent />
+        <div className="bg-gray-900 text-white p-4 flex items-center justify-between sticky top-0 z-20">
+          <h1 className="text-xl font-bold flex items-center gap-2"><Lock size={20} /> Управление меню</h1>
+          <button onClick={() => { setView('menu'); fetchMenu(); }} className="text-gray-300 hover:text-white"><X size={24} /></button>
+        </div>
+
+        <div className="p-4 space-y-6 pb-20">
+          {/* Форма добавления/редактирования */}
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <h2 className="font-bold text-lg mb-4 flex items-center gap-2 text-gray-800">
+              {editingId ? <><Edit2 size={18} className="text-orange-500" /> Редактирование</> : <><Plus size={18} className="text-green-500" /> Новый товар</>}
+            </h2>
+            <div className="space-y-3 text-sm">
+              <input type="text" placeholder="Название (Сет шашлыка XXL)" className="w-full border rounded-xl px-4 py-2.5 outline-none bg-gray-50 focus:bg-white" value={adminForm.name} onChange={e => setAdminForm({...adminForm, name: e.target.value})} />
+              
+              <div className="flex gap-3">
+                <input type="number" placeholder="Цена (₽)" className="w-1/2 border rounded-xl px-4 py-2.5 outline-none bg-gray-50 focus:bg-white" value={adminForm.price} onChange={e => setAdminForm({...adminForm, price: e.target.value})} />
+                <select className="w-1/2 border rounded-xl px-4 py-2.5 outline-none bg-gray-50" value={adminForm.category} onChange={e => setAdminForm({...adminForm, category: e.target.value})}>
+                  <option value="grill">Гриль зона</option>
+                  <option value="menu">Меню</option>
+                </select>
+              </div>
+
+              <textarea placeholder="Описание блюда (состав, вес)..." rows="3" className="w-full border rounded-xl px-4 py-2.5 outline-none bg-gray-50 focus:bg-white resize-none" value={adminForm.desc} onChange={e => setAdminForm({...adminForm, desc: e.target.value})}></textarea>
+              
+              <div className="relative">
+                <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input type="text" placeholder="Ссылка на фото (https://...)" className="w-full border rounded-xl pl-11 pr-4 py-2.5 outline-none bg-gray-50 focus:bg-white" value={adminForm.image} onChange={e => setAdminForm({...adminForm, image: e.target.value})} />
+              </div>
+
+              {adminForm.image && (
+                <div className="mt-2 text-center text-xs text-gray-500">
+                  Превью фото: <br/>
+                  <img src={adminForm.image} alt="preview" className="mt-1 h-20 object-cover rounded-lg mx-auto inline-block border" onError={(e) => e.target.style.display = 'none'} />
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-2">
+                <button onClick={saveMenuItem} className="flex-1 bg-green-500 text-white rounded-xl py-3 font-bold flex justify-center items-center gap-2 active:scale-95 transition-transform">
+                  <Save size={18} /> Сохранить
+                </button>
+                {editingId && (
+                  <button onClick={cancelEditing} className="flex-1 bg-gray-200 text-gray-700 rounded-xl py-3 font-bold active:scale-95 transition-transform">
+                    Отмена
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Список существующих товаров */}
+          <div>
+            <h2 className="font-bold text-gray-500 uppercase text-xs mb-3 tracking-wider px-2">Существующие товары ({menuItems.length})</h2>
+            <div className="space-y-3">
+              {menuItems.map(item => (
+                <div key={item._id} className="bg-white p-3 rounded-2xl flex items-center gap-3 shadow-sm border border-gray-50">
+                  <img src={item.image} alt="" className="w-16 h-16 rounded-xl object-cover bg-gray-100" onError={(e) => { e.target.src = 'https://placehold.co/100?text=Нет' }} />
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-bold text-gray-900 truncate">{item.name}</h4>
+                    <p className="text-gray-500 text-sm font-medium">{item.price} ₽ <span className="text-xs text-gray-400 ml-1">({item.category === 'grill' ? 'Гриль' : 'Меню'})</span></p>
+                  </div>
+                  <div className="flex gap-1">
+                    <button onClick={() => startEditing(item)} className="p-2.5 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 active:scale-90"><Edit2 size={18} /></button>
+                    <button onClick={() => deleteMenuItem(item._id)} className="p-2.5 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 active:scale-90"><Trash2 size={18} /></button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
