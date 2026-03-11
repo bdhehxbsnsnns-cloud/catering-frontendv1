@@ -9,7 +9,7 @@ const MENU_CATEGORIES = [
 
 // Ссылка на ваш рабочий сервер Railway
 const BACKEND_URL = 'https://catering-backendv14-production.up.railway.app';
-const ADMIN_PASSWORD = '7777'; // Пароль для входа в админку
+const ADMIN_PASSWORD = 'cateringMiniApp'; // Пароль для входа в админку
 
 export default function App() {
   const [menuItems, setMenuItems] = useState([]);
